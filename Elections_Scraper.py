@@ -174,7 +174,7 @@ if __name__ == '__main__':
     link = sys.argv[1]
     file = sys.argv[2]
 
-    check_first_arg()
     check_num_of_args()
+    check_first_arg()
     check_second_arg()
     get_csv()
