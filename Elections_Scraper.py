@@ -10,12 +10,14 @@ import requests
 from bs4 import BeautifulSoup
 
 
+# Check if the correct number of arguments have been provided
 def check_num_of_args():
     if len(sys.argv) != 3:
         print(f'only 2 args')
         quit()
 
 
+# Check if the first argument is a valid town link
 def check_first_arg():
     district_url = []
     html = get_soup('https://www.volby.cz/pls/ps2017nss/ps3?xjazyk=CZ')
@@ -31,6 +33,7 @@ def check_first_arg():
         quit()
 
 
+# Check if the second argument is a valid CSV file name
 def check_second_arg():
     if file_name() != file:
         print(f'Wronge CSV file name')
@@ -38,11 +41,13 @@ def check_second_arg():
         quit()
 
 
+# Get the CSV file name based on the town link
 def file_name():
     region_name = get_soup(link).find('div', {'class': 'topline'}).find_all('h3')[1].text.strip().lstrip('Okres: ')
     return(f'results_{region_name}.csv')
 
 
+# Get the BeautifulSoup object for a given URL
 def get_soup(l):
     while True:
         try:
@@ -54,6 +59,7 @@ def get_soup(l):
             print(f'Link "{l}": lost connection, new attempt')
 
 
+# Get the list of polling station codes
 def get_code():
     code = []
     html = get_soup(link)
@@ -63,6 +69,7 @@ def get_code():
     return code
 
 
+# Get the list of polling station locations
 def get_location():
     location = []
     html = get_soup(link)
@@ -72,6 +79,7 @@ def get_location():
     return location
 
 
+# Get the list of URLs for each polling station
 def get_location_url():
     location_url = []
     html = get_soup(link)
@@ -82,6 +90,7 @@ def get_location_url():
     return location_url
 
 
+# Get the list of registered voters for each polling station
 def get_registered_voters():
     voters = []
     url = get_location_url()
@@ -93,6 +102,7 @@ def get_registered_voters():
     return(voters)
 
 
+# Get the list of envelopes for each polling station
 def get_envelopes():
     envelopes = []
     url = get_location_url()
@@ -104,6 +114,7 @@ def get_envelopes():
     return(envelopes)
 
 
+# Get a list of valid votes for each party
 def get_valid_votes():
     valid_votes = []
     url = get_location_url()
@@ -115,6 +126,7 @@ def get_valid_votes():
     return(valid_votes)
 
 
+# Get a list of party names
 def get_parties():
     parties = []
     url = get_location_url()
@@ -124,6 +136,7 @@ def get_parties():
     return parties
 
 
+# Get a list of votes for each party
 def get_party_votes():
     party_votes = []
     url = get_location_url()
@@ -141,6 +154,7 @@ def get_party_votes():
     return party_votes
 
 
+# Generate a CSV file containing election results
 def get_csv():
     code = get_code()
     location = get_location()
